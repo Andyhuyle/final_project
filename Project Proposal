@@ -7,6 +7,13 @@ Underlying Questions to Investigate:
 3. Do delays increase or decrease at specific times of the day?
 4. Are delays consistently observed at specific RIPTA stations across time?
 
+Packages Required: 
+library(tidyverse)
+library(tidyr)
+library(dplyr) # to use %>%
+library(readr) # to read excel file
+library(lubridate) # to use as.Date function
+
 Part 1:
 - group_by Day.of.Week 
 - create table and figure displaying number and percent of delays on each day of the week
