@@ -1,0 +1,27 @@
+Dataset: RIPTA data
+Research Question: How can we leverage patterns of RIPTA transportation to improve ride experiences?
+
+Underlying Questions to Investigate:
+1. Are increased delays observed on specific days of the week?
+2. Do delays increase or decrease at specific times of the month?
+3. Do delays increase or decrease at specific times of the day?
+4. Are delays consistently observed at specific RIPTA stations across time?
+
+Part 1:
+- group_by Day.of.Week 
+- create table and figure displaying number and percent of delays on each day of the week
+
+Part 2:
+- generate graph displaying number of delays per day and week May 2024
+
+Part 3: 
+- generate a new column for hour of the day using the mutate and positx functions
+- create a graph to display the number of delays at each hour
+
+Part 4: 
+- group_by Stop.Number in ridership_simulated dataset and the stop in otp_simulated
+- create table and figure displaying number and percent of delays at each stop
+
+Simulation + Optimization: 
+- simulate a day and month of RIPTA rides to determine the number of delays
+- optimize the stations that require changes in arrival time
