@@ -1,4 +1,4 @@
-# **Final Project: Ridership & On-Time Performance (OTP) Analysis for Simualted RIPTA Data**
+**Final Project: Ridership & On-Time Performance (OTP) Analysis for Simualted RIPTA Data**
 
 This project performs exploratory, research-driven, and visualization-focused 
 analysis of simulated **public transit ridership** and **on-time performance (OTP)** data. 
@@ -14,7 +14,7 @@ route prioritization.
 
 ---
 
-## 📁 **Project Structure**
+**Project Structure**
 
 ```
 final_project/
@@ -45,19 +45,19 @@ final_project/
 
 ---
 
-#**1. Exploratory Data Analysis (EDA)**
+**1. Exploratory Data Analysis (EDA)**
 
 The file **`run_eda.qmd`** loads libraries, imports data, and sources 
 scripts that produce exploratory summaries.
 
-#**2. Research-Driven Analysis**
+**2. Research-Driven Analysis**
 
 The file **`run_research_driven_analysis.qmd`** 
 provides the project’s full analysis pipeline.
 
-## **Functions (from `/scripts/`)**
+**Functions (from `/scripts/`)**
 
-### ### **`aggregate_ridership()`**
+### **`aggregate_ridership()`**
 
 Aggregates simulated ridership data by **Route × Hour**
 
@@ -88,7 +88,7 @@ Returns routes present in both dataframes.
 
 ---
 
-#**3. Visualization**
+**3. Visualization**
 
 Two complementary visualization modules:
 
@@ -100,7 +100,7 @@ Both are automatically sourced in the run documents.
 
 ---
 
-#**Required Libraries**
+**Required Libraries**
 ```r
 tidyverse
 dplyr
@@ -112,7 +112,7 @@ ggplot2
 
 ---
 
-#**Data**
+**Data**
 
 Please place your datasets into:
 
