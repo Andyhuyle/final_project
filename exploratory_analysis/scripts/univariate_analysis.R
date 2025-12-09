@@ -1,5 +1,5 @@
 # otp univariate analysis -------------
-otp_plots_dir <- "~/Desktop/Datascience in R/final_project/plots/univariate"
+otp_plots_dir <- "~/Desktop/Datascience in R/final_project/exploratory_analysis/univariate_plots"
 
 # counts for days in may
 otp_dates <- ggplot(otp_simulated, aes(x = Date)) +
@@ -33,7 +33,7 @@ otp_stops <- ggplot(otp_simulated, aes(x = fct_infreq(as.factor(Stop)))) +
 ggsave(paste0(otp_plots_dir,"/otp_stops.png"), otp_stops, width = 36, height = 12)
 
 # ridership univariate analysis -------------
-ridership_plots_dir <- "~/Desktop/Datascience in R/final_project/plots/univariate"
+ridership_plots_dir <- "~/Desktop/Datascience in R/final_project/exploratory_analysis/univariate_plots"
 
 # extracts hour from time col
 ridership_simulated <- ridership_simulated %>%
@@ -81,16 +81,16 @@ pass_columns <- c("Low.Income", "Transfer", "Off.Peak",
 category_counts <- data.frame(
   Category = pass_columns,
   Count = c(
-    sum(ridership$Low.Income == 1, na.rm = TRUE),
-    sum(ridership$Transfer == 1, na.rm = TRUE),
-    sum(ridership$Off.Peak == 1, na.rm = TRUE),
-    sum(ridership$Eco.Pass == 1, na.rm = TRUE),
-    sum(ridership$One.Hour.Pass == 1, na.rm = TRUE),
-    sum(ridership$Two.Hour.Pass == 1, na.rm = TRUE),
-    sum(ridership$Day.Pass == 1, na.rm = TRUE),
-    sum(ridership$Ten.Ride.Pass == 1, na.rm = TRUE),
-    sum(ridership$Week.Pass == 1, na.rm = TRUE),
-    sum(ridership$Monthly.Pass == 1, na.rm = TRUE)
+    sum(ridership_simulated$Low.Income == 1, na.rm = TRUE),
+    sum(ridership_simulated$Transfer == 1, na.rm = TRUE),
+    sum(ridership_simulated$Off.Peak == 1, na.rm = TRUE),
+    sum(ridership_simulated$Eco.Pass == 1, na.rm = TRUE),
+    sum(ridership_simulated$One.Hour.Pass == 1, na.rm = TRUE),
+    sum(ridership_simulated$Two.Hour.Pass == 1, na.rm = TRUE),
+    sum(ridership_simulated$Day.Pass == 1, na.rm = TRUE),
+    sum(ridership_simulated$Ten.Ride.Pass == 1, na.rm = TRUE),
+    sum(ridership_simulated$Week.Pass == 1, na.rm = TRUE),
+    sum(ridership_simulated$Monthly.Pass == 1, na.rm = TRUE)
   )
 ) %>%
   arrange(desc(Count))

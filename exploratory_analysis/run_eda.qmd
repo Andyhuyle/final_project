@@ -1,0 +1,33 @@
+---
+title: "run_eda"
+format: html
+---
+
+libraries + data
+```{r}
+library(tidyverse)
+library(tidyr)
+library(dplyr) 
+library(readr) 
+library(lubridate) 
+library(ggplot2)
+
+otp_simulated <- read_csv("~/Desktop/Datascience in R/final_project/data/otp_simulated.csv")
+ridership_simulated <- read_csv("~/Desktop/Datascience in R/final_project/data/ridership_simulated.csv")
+```
+
+Data Completness
+```{r}
+source("~/Desktop/Datascience in R/final_project/exploratory_analysis/scripts/data_completness.R")
+```
+
+Univariate analysis
+```{r}
+source("~/Desktop/Datascience in R/final_project/exploratory_analysis/scripts/univariate_analysis.R")
+```
+
+Demographic analysis
+```{r}
+source("~/Desktop/Datascience in R/final_project/exploratory_analysis/scripts/demographic_analysis.R")
+```
+

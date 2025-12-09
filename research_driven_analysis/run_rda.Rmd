@@ -1,0 +1,60 @@
+---
+title: "run_research_driven_analysis"
+output: html_document
+---
+
+libraries + functions + data
+```{r}
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(tidyr)
+library(dplyr) 
+library(readr) 
+library(lubridate) 
+library(ggplot2)
+
+source("~/Desktop/Datascience in R/final_project/research_driven_analysis/scripts/aggregate.R")
+source("~/Desktop/Datascience in R/final_project/research_driven_analysis/scripts/mapping.R")
+source("~/Desktop/Datascience in R/final_project/research_driven_analysis/scripts/analysis.R")
+source("~/Desktop/Datascience in R/final_project/research_driven_analysis/scripts/utilities.R")
+
+otp_simulated <- read_csv("~/Desktop/Datascience in R/final_project/data/otp_simulated.csv")
+ridership_simulated <- read_csv("~/Desktop/Datascience in R/final_project/data/ridership_simulated.csv")
+```
+
+Aggregate and merge data
+```{r}
+#| warning: false
+#| message: false
+
+# aggregate ridership + otp data
+ridershp_aggregated <- aggregate_ridership(ridership_simulated)
+otp_aggregated <- aggregate_otp(otp_simulated)
+
+# merge data based on route and hour
+merged_dataset <- map_ridership(ridershp_aggregated, otp_aggregated)
+
+
+# generate the summary and priority categories
+hourly_result <- assign_and_split_priority(merged_dataset)
+full_summary <- hourly_result$summary
+
+# access subsets
+Late <- hourly_result$Late
+Early <- hourly_result$Early
+On_Time <- hourly_result$On_Time
+
+# use subsets to get full data for given routes
+late_subset <- filter_routes(full_summary, unique(Late$Route))
+early_subset <- filter_routes(full_summary, unique(Early$Route))
+```
+
+Visualization!
+```{r}
+source("~/Desktop/Datascience in R/final_project/research_driven_analysis/scripts/visualization_pt1.R")
+source("~/Desktop/Datascience in R/final_project/research_driven_analysis/scripts/visualization_pt2.R")
+```
+
+
