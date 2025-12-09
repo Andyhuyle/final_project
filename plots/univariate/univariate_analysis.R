@@ -32,15 +32,6 @@ otp_stops <- ggplot(otp_simulated, aes(x = fct_infreq(as.factor(Stop)))) +
   theme(axis.text.x = element_text(angle=70, size=10, hjust = 1))
 ggsave(paste0(otp_plots_dir,"/otp_stops.png"), otp_stops, width = 36, height = 12)
 
-# delays
-otp_delays <- ggplot(otp_simulated, aes(x = Delay.Sec)) +
-  geom_histogram(stat = "count", fill = "steelblue", color = "black") +
-  labs(title = "Count by Delays",
-       x = "Date",
-       y = "Count") +
-  theme_minimal()
-ggsave(paste0(otp_plots_dir,"/otp_delays.png"), otp_delays, width = 8, height = 5)
-
 # ridership univariate analysis -------------
 ridership_plots_dir <- "~/Desktop/Datascience in R/final_project/plots/univariate"
 
