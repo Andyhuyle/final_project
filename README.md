@@ -92,10 +92,9 @@ Returns routes present in both dataframes.
 
 Two complementary visualization modules:
 
-* **visualization_pt1.R** — route-specific deep dives, faceted views, and 
-performance bands
+* **visualization_pt1.R** — route-specific trends
 
-* **visualization_pt2.R** — heatmaps, temporal plots, delay distributions
+* **visualization_pt2.R** — heatmaps
 
 Both are automatically sourced in the run documents.
 
