@@ -63,36 +63,101 @@ On_Time <- hourly_result$On_Time
 
 library(ggplot2)
 
-subset <- filter_routes(full_summary, unique(high_priority$Route))
+late_subset <- filter_routes(full_summary, unique(Late$Route))
+early_subset <- filter_routes(full_summary, unique(Early$Route))
 
-ggplot(subset, aes(x = Hour, y = total_riders, color = as.factor(Route))) +
+hourly_result <- full_summary %>%
+  mutate(
+    highlight = case_when(
+      Route %in% late_subset$Route ~ "Late",
+      Route %in% early_subset$Route ~ "Early",
+      TRUE ~ "Other"
+    )
+  )
+
+
+# Plot
+ggplot(hourly_result, aes(x = Hour, y = total_riders, group = Route)) +
+  geom_line(aes(color = highlight), size = 1) +
+  scale_color_manual(values = c(
+    "Late" = "red",
+    "Early" = "blue",
+    "Other" = "gray70"
+  ))  +
+  labs(
+    title = "Ridership per Hour by Route",
+    x = "Hour of Day",
+    y = "Total Riders",
+    color = "Group"
+  ) +
+  theme_minimal()
+
+ggplot(late_subset, aes(x = Hour, y = total_riders, color = as.factor(Route))) +
   geom_line(size = 1) +
   labs(
-    title = "High-Priority Stops: High Ridership and 5 min-Delay",
+    title = "Routes that are Delayed by 5 minutes or More",
     x = "Hour of Day",
     y = "Total Riders",
     color = "Route"
   ) +
   theme_minimal()
 
-library(ggplot2)
-library(dplyr)
-
-# Suppose we have hourly_summary with columns: Route, Hour, total_riders
-# And we want to highlight only these routes
-
-hourly_summary <- hourly_summary %>%
-  mutate(highlight = ifelse(Route %in% subset$Route, "Highlight", "Other"))
-
-# Plot
-ggplot(hourly_summary, aes(x = Hour, y = total_riders, group = Route)) +
-  geom_line(aes(color = highlight, alpha = highlight), size = 1) +
-  scale_color_manual(values = c("Highlight" = "red", "Other" = "gray70")) +
-  scale_alpha_manual(values = c("Highlight" = 1, "Other" = 0.3)) +
-  labs(title = "Ridership per Hour by Route",
-       x = "Hour of Day", y = "Total Riders") +
+ggplot(early_subset, aes(x = Hour, y = total_riders, color = as.factor(Route))) +
+  geom_line(size = 1) +
+  labs(
+    title = "Routes that are Early by 5 minutes or More",
+    x = "Hour of Day",
+    y = "Total Riders",
+    color = "Route"
+  ) +
   theme_minimal()
+
+
+priority_routes <- common_routes(early_subset, late_subset)
+priority_routes <- filter_routes(full_summary, priority_routes)
+
 
 ```
 
+
+```{r}
+ggplot(priority_routes, aes(x = Hour, y = total_riders, color = as.factor(Route))) +
+  geom_line(size = 1) +
+  labs(
+    title = "High-Priority Stops: Both Early and Late!",
+    x = "Hour of Day",
+    y = "Total Riders",
+    color = "Route"
+  ) +
+  theme_minimal()
+
+ggplot(priority_routes, aes(x = Hour, y = factor(Route), fill = avg_delay_min)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(
+    low = "blue",       # early
+    mid = "white",     # on-time
+    high = "red",       # late
+    midpoint = 0,
+    limits = c(-20, 20),
+    name = "Avg Delay (min)"
+  ) +
+  labs(
+    x = "Hour of Day",
+    y = "Route",
+    title = "Heatmap of Average Delay by Route and Hour"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 8),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+ggplot(priority_routes, aes(x = Hour, y = factor(Route), fill = avg_delay_min, alpha = total_riders)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, limits = c(-5,5), name = "Avg Delay (min)") +
+  scale_alpha(range = c(0.3, 1), name = "Riders (opacity)") +
+  labs(x = "Hour of Day", y = "Route", title = "Delay by Hour and Route (Alpha = Riders)") +
+  theme_minimal()
+
+```
 
