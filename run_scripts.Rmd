@@ -1,0 +1,98 @@
+---
+title: "run_scripts"
+output: html_document
+---
+
+Part 0: libraries
+```{r}
+library(tidyverse)
+library(tidyr)
+library(dplyr) 
+library(readr) 
+library(lubridate) 
+library(ggplot2)
+
+otp_simulated <- read_csv("~/Desktop/Datascience in R/final_project/data/otp_simulated.csv")
+ridership_simulated <- read_csv("~/Desktop/Datascience in R/final_project/data/ridership_simulated.csv")
+```
+
+Part 1: data completeness
+```{r}
+# counts the number of NAs in each column and summarizes it into a dataframe - data looks complete
+Na_count_otp_simulated <- otp_simulated %>%
+  summarise(across(everything(), ~ sum(is.na(.)))) %>%
+  pivot_longer(everything(), names_to = "column", values_to = "na_count") %>%
+  arrange(desc(na_count))
+
+Na_count_ridership_simulated <- ridership_simulated %>%
+  summarise(across(everything(), ~ sum(is.na(.)))) %>%
+  pivot_longer(everything(), names_to = "column", values_to = "na_count") %>%
+  arrange(desc(na_count))
+```
+
+
+Part 2: univariate analysis
+```{r}
+
+```
+
+Part 3: bivariate analysis
+
+Part 4: higher level analysis
+```{r}
+source("~/Desktop/Datascience in R/final_project/scripts/aggregate.R")
+source("~/Desktop/Datascience in R/final_project/scripts/mapping.R")
+source("~/Desktop/Datascience in R/final_project/scripts/analysis.R")
+source("~/Desktop/Datascience in R/final_project/scripts/utilities.R")
+
+ridershp_aggregated <- aggregate_ridership(ridership_simulated)
+otp_aggregated <- aggregate_otp(otp_simulated)
+
+merged_dataset <- map_ridership(ridershp_aggregated, otp_aggregated)
+
+# Generate the summary and priority categories
+hourly_result <- assign_and_split_priority(merged_dataset)
+
+# Access full summary
+full_summary <- hourly_result$summary
+
+# Access subsets
+Late <- hourly_result$Late
+Early <- hourly_result$Early
+On_Time <- hourly_result$On_Time
+
+library(ggplot2)
+
+subset <- filter_routes(full_summary, unique(high_priority$Route))
+
+ggplot(subset, aes(x = Hour, y = total_riders, color = as.factor(Route))) +
+  geom_line(size = 1) +
+  labs(
+    title = "High-Priority Stops: High Ridership and 5 min-Delay",
+    x = "Hour of Day",
+    y = "Total Riders",
+    color = "Route"
+  ) +
+  theme_minimal()
+
+library(ggplot2)
+library(dplyr)
+
+# Suppose we have hourly_summary with columns: Route, Hour, total_riders
+# And we want to highlight only these routes
+
+hourly_summary <- hourly_summary %>%
+  mutate(highlight = ifelse(Route %in% subset$Route, "Highlight", "Other"))
+
+# Plot
+ggplot(hourly_summary, aes(x = Hour, y = total_riders, group = Route)) +
+  geom_line(aes(color = highlight, alpha = highlight), size = 1) +
+  scale_color_manual(values = c("Highlight" = "red", "Other" = "gray70")) +
+  scale_alpha_manual(values = c("Highlight" = 1, "Other" = 0.3)) +
+  labs(title = "Ridership per Hour by Route",
+       x = "Hour of Day", y = "Total Riders") +
+  theme_minimal()
+
+```
+
+
